@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IronCore Fitness | San Diego</title>
+    
+    <!-- Fonts: Teko for industrial headings, Roboto for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Teko:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CORE VARIABLES --- */
+        :root {
+            --neon-red: #ff0f39;
+            --deep-black: #050505;
+            --charcoal: #121212;
+            --concrete: #1e1e1e;
+            --text-white: #f0f0f0;
+            --text-dim: #888888;
+            --skew-angle: -3deg;
+            --font-head: 'Teko', sans-serif;
+            --font-body: 'Roboto', sans-serif;
+        }
+
+        /* --- RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--deep-black);
+            color: var(--text-white);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { display: block; width: 100%; object-fit: cover; }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-padding { padding: 120px 0; }
+        
+        /* Skewed Section Wrapper */
+        .skew-section {
+            position: relative;
+            transform: skewY(var(--skew-angle));
+            padding: 100px 0;
+            margin: 50px 0;
+            z-index: 1;
+        }
+        
+        .unskew-content {
+            transform: skewY(calc(var(--skew-angle) * -1));
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 { font-family: var(--font-head); text-transform: uppercase; line-height: 0.9; }
+        .display-text { font-size: 6rem; font-weight: 700; letter-spacing: -2px; }
+        .sub-head { font-size: 1.2rem; color: var(--text-dim); letter-spacing: 2px; margin-bottom: 1rem; }
+        .highlight { color: var(--neon-red); }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background: var(--neon-red);
+            color: white;
+            padding: 15px 40px;
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 15, 57, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            clip-path: none;
+            padding: 12px 35px;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: black;
+        }
+
+        /* --- NAV --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+        }
+        .logo span { color: var(--neon-red); }
+
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a {
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--neon-red);
+            transition: 0.3s;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* High quality gym interior image */
+            background: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            z-index: -2;
+            filter: brightness(0.4);
+            transform: scale(1.1);
+            animation: zoomSlow 20s infinite alternate;
+        }
+
+        @keyframes zoomSlow { from { transform: scale(1); } to { transform: scale(1.15); } }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 7rem;
+            margin-bottom: 20px;
+            line-height: 0.85;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        
+        .hero p { font-size: 1.5rem; margin-bottom: 40px; max-width: 600px; color: #ccc; }
+
+        /* --- MARQUEE TICKER --- */
+        .marquee-wrapper {
+            background: var(--neon-red);
+            color: white;
+            padding: 15px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            z-index: 5;
+            transform: skewY(0deg); /* Flat for readability */
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        .marquee-item {
+            font-family: var(--font-head);
+            font-size: 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin: 0 50px;
+        }
+
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- EQUIPMENT SHOWCASE (ASYMMETRIC) --- */
+        .equipment-section {
+            background: var(--charcoal);
+            border-top: 5px solid var(--neon-red);
+            border-bottom: 5px solid var(--neon-red);
+        }
+
+        .equip-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 0;
+            min-height: 600px;
+        }
+
+        .equip-img {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+        
+        .equip-img img { height: 100%; width: 100%; }
+
+        .equip-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            background: #151515;
+        }
+
+        .stat-row {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            border-top: 1px solid #333;
+            padding-top: 30px;
+        }
+        
+        .stat h4 { font-size: 3rem; color: var(--neon-red); }
+        .stat span { text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+
+        /* --- CLASSES (HORIZONTAL SCROLL) --- */
+        .classes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 50px;
+            padding-right: 50px;
+        }
+
+        .horizontal-scroll-wrapper {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding-bottom: 50px;
+            padding-left: 20px;
+            scrollbar-width: none; /* Firefox */
+        }
+        .horizontal-scroll-wrapper::-webkit-scrollbar { display: none; }
+
+        .class-card {
+            min-width: 400px;
+            height: 550px;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            transition: 0.4s;
+            flex-shrink: 0;
+            border: 1px solid #333;
+        }
+
+        .class-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border-color: var(--neon-red);
+        }
+
+        .class-card img {
+            height: 100%;
+            width: 100%;
+            transition: 0.5s;
+            filter: grayscale(80%);
+        }
+
+        .class-card:hover img {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+
+        .class-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+
+        .class-info h3 { font-size: 2.5rem; margin-bottom: 5px; }
+        .class-meta { display: flex; gap: 20px; font-size: 0.9rem; font-weight: bold; color: var(--neon-red); }
+
+        /* --- TRAINERS (FILMSTRIP) --- */
+        .trainers-section {
+            background: url('https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=2069&auto=format&fit=crop') no-repeat center center/cover;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        .trainers-overlay {
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.7);
+        }
+
+        .trainer-filmstrip {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 50px 20px;
+            /* Hide scrollbar */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .trainer-filmstrip::-webkit-scrollbar { display: none; }
+
+        .trainer-card {
+            min-width: 280px;
+            height: 400px;
+            background: var(--charcoal);
+            border: 1px solid #333;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .trainer-card img {
+            height: 100%;
+            width: 100%;
+            transition: 0.4s;
+        }
+
+        .trainer-card:hover img { opacity: 0.3; }
+
+        .trainer-details {
+            position: absolute;
+            bottom: -100px;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            transition: 0.4s;
+            text-align: center;
+        }
+
+        .trainer-card:hover .trainer-details { bottom: 20px; }
+        .trainer-details h3 { font-size: 2rem; color: white; }
+        .trainer-details span { color: var(--neon-red); font-weight: bold; text-transform: uppercase; }
+
+        /* --- MEMBERSHIP (GLASS CARDS) --- */
+        .membership-wrapper {
+            background: radial-gradient(circle at center, #2a2a2a 0%, #000 70%);
+        }
+
+        .plans-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .plan-card {
+            width: 350px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 40px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .plan-card:hover {
+            border-color: var(--neon-red);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .plan-card h3 { font-size: 2.5rem; margin-bottom: 10px; }
+        .price { font-size: 3.5rem; font-family: var(--font-head); font-weight: 700; margin-bottom: 30px; }
+        .price span { font-size: 1rem; color: #888; font-family: var(--font-body); }
+
+        .features li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .features li i { color: var(--neon-red); }
+
+        .plan-cta {
+            margin-top: 30px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* --- LOCATION & FOOTER --- */
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 500px;
+        }
+
+        .map-box iframe {
+            width: 100%;
+            height: 100%;
+            filter: grayscale(100%) invert(90%);
+        }
+
+        .info-box {
+            background: #111;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .info-row {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .info-row i { font-size: 1.5rem; color: var(--neon-red); margin-top: 5px; }
+        .info-row h4 { font-size: 1.5rem; margin-bottom: 5px; }
+        .info-row p { color: #aaa; }
+
+        /* --- FOOTER --- */
+        footer {
+            background: black;
+            padding: 60px 0 20px;
+            border-top: 1px solid #222;
+            text-align: center;
+        }
+        .footer-logo { font-size: 3rem; font-family: var(--font-head); color: white; margin-bottom: 20px; }
+        .socials a {
+            display: inline-flex;
+            width: 50px; height: 50px;
+            border: 1px solid #333;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 10px;
+            font-size: 1.2rem;
+        }
+        .socials a:hover { background: var(--neon-red); border-color: var(--neon-red); }
+
+        /* Floating Chat */
+        .chat-btn {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            background: #25d366;
+            color: white;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            z-index: 999;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+        .chat-btn:hover { transform: scale(1.1); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .display-text { font-size: 4rem; }
+            .hero h1 { font-size: 4.5rem; }
+            .equip-grid { grid-template-columns: 1fr; }
+            .equip-img { height: 300px; }
+            .equip-text { padding: 40px 20px; }
+            .contact-layout { grid-template-columns: 1fr; height: auto; }
+            .map-box { height: 300px; }
+            
+            .nav-links {
+                position: fixed;
+                top: 0; right: -100%;
+                width: 70%; height: 100vh;
+                background: #111;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: 0.4s;
+                border-left: 1px solid #333;
+            }
+            .nav-links.active { right: 0; }
+            .mobile-toggle { display: block; z-index: 1001; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="#" class="logo">IRON<span>CORE</span></a>
+            <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#equipment">Facility</a></li>
+                <li><a href="#classes">Classes</a></li>
+                <li><a href="#trainers">Trainers</a></li>
+                <li><a href="#membership">Join</a></li>
+                <li><a href="#contact" class="btn" style="padding: 8px 20px; font-size: 1rem;">Start Trial</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
+            <p class="sub-head">San Diego's Elite Training Ground</p>
+            <h1>FORGE YOUR <br> <span class="highlight">LEGACY</span></h1>
+            <p>We don't just provide equipment. We provide the atmosphere, the community, and the intensity required to transform.</p>
+            <div style="display: flex; gap: 20px;">
+                <a href="#membership" class="btn">Join Now</a>
+                <a href="#equipment" class="btn btn-outline">Take a Tour</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-wrapper">
+        <div class="marquee-content">
+            <div class="marquee-item">Heavy Duty Racks • Olympic Weights • Turf Zone • Sauna • Cardio Cinema • Personal Training • Nutrition Counseling • </div>
+            <div class="marquee-item">Heavy Duty Racks • Olympic Weights • Turf Zone • Sauna • Cardio Cinema • Personal Training • Nutrition Counseling • </div>
+        </div>
+    </div>
+
+    <!-- FACILITIES / EQUIPMENT (Asymmetrical Layout) -->
+    <section class="section-padding" id="equipment">
+        <div class="container">
+            <p class="sub-head">State of the Art</p>
+            <h2 class="display-text">IRON & <span class="highlight">STEEL</span></h2>
+        </div>
+
+        <div class="equip-grid">
+            <!-- Image Side -->
+            <div class="equip-img">
+                <!-- High quality equipment image -->
+                <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop" alt="Gym Equipment">
+            </div>
+            <!-- Text Side -->
+            <div class="equip-text">
+                <h3>PRO-GRADE EQUIPMENT</h3>
+                <p style="margin-top: 20px; color: #bbb; line-height: 1.8;">
+                    We’ve spared no expense. Featuring Rogue Fitness racks, Hammer Strength plate-loaded machines, and a comprehensive set of dumbbells up to 150lbs. This is a serious gym for serious lifters.
+                </p>
+                
+                <div class="stat-row">
+                    <div class="stat">
+                        <h4 data-target="20">20k</h4>
+                        <span>Sq Ft Facility</span>
+                    </div>
+                    <div class="stat">
+                        <h4>150+</h4>
+                        <span>Machines</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <a href="#" style="color: white; border-bottom: 2px solid var(--neon-red); font-family: var(--font-head); font-size: 1.2rem;">View Full Inventory <i class="fas fa-arrow-right" style="font-size:0.8em"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLASSES (Horizontal Scroll) -->
+    <section class="section-padding" style="background: #0a0a0a;" id="classes">
+        <div class="container">
+            <div class="classes-header">
+                <div>
+                    <p class="sub-head">Sweat & Grind</p>
+                    <h2 class="display-text">DAILY <span class="highlight">CLASSES</span></h2>
+                </div>
+                <!-- Scroll Hint for Desktop -->
+                <div style="display: flex; align-items: center; gap: 10px; color: #666;">
+                    <i class="fas fa-arrow-left"></i> Scroll / Swipe <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+
+            <div class="horizontal-scroll-wrapper">
+                <!-- Class 1 -->
+                <div class="class-card">
+                    <img src="https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?q=80&w=1935&auto=format&fit=crop" alt="HIIT">
+                    <div class="class-info">
+                        <h3>HIIT Ignite</h3>
+                        <div class="class-meta">
+                            <span><i class="far fa-clock"></i> 45 Min</span>
+                            <span>High Intensity</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Class 2 -->
+                <div class="class-card">
+                    <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=2070&auto=format&fit=crop" alt="Yoga">
+                    <div class="class-info">
+                        <h3>Power Flow</h3>
+                        <div class="class-meta">
+                            <span><i class="far fa-clock"></i> 60 Min</span>
+                            <span>Mobility</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Class 3 -->
+                <div class="class-card">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop" alt="Lifting">
+                    <div class="class-info">
+                        <h3>Iron Pump</h3>
+                        <div class="class-meta">
+                            <span><i class="far fa-clock"></i> 60 Min</span>
+                            <span>Strength</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Class 4 -->
+                <div class="class-card">
+                    <img src="https://images.unsplash.com/photo-1534258936925-c48947771285?q=80&w=2070&auto=format&fit=crop" alt="Spin">
+                    <div class="class-info">
+                        <h3>Cycle Surge</h3>
+                        <div class="class-meta">
+                            <span><i class="far fa-clock"></i> 50 Min</span>
+                            <span>Cardio</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRAINERS (Filmstrip on Parallax) -->
+    <section class="section-padding trainers-section" id="trainers">
+        <div class="trainers-overlay"></div>
+        <div class="container unskew-content" style="position: relative; z-index: 2;">
+            <h2 class="display-text" style="margin-bottom: 40px;">YOUR <span class="highlight">COACHES</span></h2>
+            
+            <div class="trainer-filmstrip">
+                <div class="trainer-card">
+                    <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=2070&auto=format&fit=crop" alt="Trainer 1">
+                    <div class="trainer-details">
+                        <h3>Marcus</h3>
+                        <span>Strength Coach</span>
+                    </div>
+                </div>
+                <div class="trainer-card">
+                    <img src="https://images.unsplash.com/photo-1606889464198-fcb18894cf0c?q=80&w=2070&auto=format&fit=crop" alt="Trainer 2">
+                    <div class="trainer-details">
+                        <h3>Elena</h3>
+                        <span>Crossfit Expert</span>
+                    </div>
+                </div>
+                <div class="trainer-card">
+                    <img src="https://images.unsplash.com/photo-1574680096141-1cddd32e04ca?q=80&w=1974&auto=format&fit=crop" alt="Trainer 3">
+                    <div class="trainer-details">
+                        <h3>David</h3>
+                        <span>Boxing</span>
+                    </div>
+                </div>
+                <div class="trainer-card">
+                    <img src="https://images.unsplash.com/photo-1597347316205-36f6c451902a?q=80&w=1974&auto=format&fit=crop" alt="Trainer 4">
+                    <div class="trainer-details">
+                        <h3>Sarah</h3>
+                        <span>Yoga & Mobility</span>
+                    </div>
+                </div>
+                 <div class="trainer-card">
+                    <img src="https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?q=80&w=2069&auto=format&fit=crop" alt="Trainer 5">
+                    <div class="trainer-details">
+                        <h3>Jax</h3>
+                        <span>Bodybuilding</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEMBERSHIP (Skewed & Glassmorphism) -->
+    <section class="section-padding membership-wrapper" id="membership">
+        <div class="container">
+            <div class="text-center">
+                <p class="sub-head">Invest in Yourself</p>
+                <h2 class="display-text">MEMBERSHIP <span class="highlight">TIERS</span></h2>
+            </div>
+
+            <div class="plans-container">
+                <!-- Basic -->
+                <div class="plan-card">
+                    <h3>Foundation</h3>
+                    <div class="price">$39<span>/mo</span></div>
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> Gym Floor Access</li>
+                        <li><i class="fas fa-check"></i> Locker Rooms</li>
+                        <li><i class="fas fa-check"></i> 1 Free Training Session</li>
+                        <li style="opacity: 0.5"><i class="fas fa-times"></i> Group Classes</li>
+                        <li style="opacity: 0.5"><i class="fas fa-times"></i> Guest Privileges</li>
+                    </ul>
+                    <div class="plan-cta">
+                        <button class="btn btn-outline" style="width:100%">Select</button>
+                    </div>
+                </div>
+
+                <!-- Pro -->
+                <div class="plan-card" style="border-color: var(--neon-red); transform: scale(1.05);">
+                    <div style="position: absolute; top:0; right:0; background:var(--neon-red); color:white; padding: 5px 15px; font-weight:bold;">POPULAR</div>
+                    <h3>Athlete</h3>
+                    <div class="price">$69<span>/mo</span></div>
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> 24/7 Access</li>
+                        <li><i class="fas fa-check"></i> Unlimited Group Classes</li>
+                        <li><i class="fas fa-check"></i> Free Towel Service</li>
+                        <li><i class="fas fa-check"></i> Sauna Access</li>
+                        <li style="opacity: 0.5"><i class="fas fa-times"></i> Personal Training</li>
+                    </ul>
+                    <div class="plan-cta">
+                        <button class="btn" style="width:100%">Select</button>
+                    </div>
+                </div>
+
+                <!-- Elite -->
+                <div class="plan-card">
+                    <h3>Olympian</h3>
+                    <div class="price">$99<span>/mo</span></div>
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> All Athlete Perks</li>
+                        <li><i class="fas fa-check"></i> 2 PT Sessions/mo</li>
+                        <li><i class="fas fa-check"></i> Nutrition Planning</li>
+                        <li><i class="fas fa-check"></i> Exclusive Gear</li>
+                        <li><i class="fas fa-check"></i> Private Locker</li>
+                    </ul>
+                    <div class="plan-cta">
+                        <button class="btn btn-outline" style="width:100%">Select</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT / LOCATION -->
+    <section class="contact-layout" id="contact">
+        <div class="map-box">
+             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d53553.94194758931!2d-117.23602294764834!3d32.83282893673168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80d9530fad979e4b%3A0xbdb431e932865342!2sSan%20Diego%2C%20CA!5e0!3m2!1sen!2sus!4v1684390000000!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+        <div class="info-box">
+            <h2 class="display-text">GET <span class="highlight">HERE</span></h2>
+            <div style="margin-top: 40px;">
+                <div class="info-row">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <h4>Location</h4>
+                        <p>850 Iron Ave, San Diego, CA 92101</p>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h4>Hours</h4>
+                        <p>Open 24 Hours / 7 Days</p>
+                        <p>Staff: 8am - 8pm</p>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <h4>Contact</h4>
+                        <p>(619) 555-IRON</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <a href="#" class="footer-logo">IRON<span>CORE</span></a>
+            <p style="color: #666; max-width: 500px; margin: 0 auto 30px;">San Diego's premier destination for functional fitness, strength training, and community.</p>
+            <div class="socials">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p style="margin-top: 30px; color: #444; font-size: 0.8rem;">&copy; 2023 IronCore Fitness. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Chat -->
+    <a href="#" class="chat-btn" onclick="alert('Demo: WhatsApp Chat Opened'); return false;">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- JS -->
+    <script>
+        // Mobile Menu
+        const toggle = document.querySelector('.mobile-toggle');
+        const nav = document.querySelector('.nav-links');
+        
+        toggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            const icon = toggle.querySelector('i');
+            if(nav.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Reveal on Scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.plan-card, .trainer-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // Smooth Scroll fix for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu if open
+                nav.classList.remove('active');
+                toggle.querySelector('i').classList.add('fa-bars');
+                toggle.querySelector('i').classList.remove('fa-times');
+            });
+        });
+    </script>
+</body>
+</html>
